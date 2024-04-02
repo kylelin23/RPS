@@ -1,0 +1,27 @@
+#buttons{
+    display: flex;
+    padding: 30px;
+    justify-content: space-around;
+}
+
+#result{
+    text-align: center;
+}
+
+button{
+    height: 100px;
+    width: 200px;
+    font-size: 30px;
+}
+
+#win{
+    font-size: 100px;
+}
+
+#Rock{
+    background-color: chocolate;
+}
+
+#Scissors{
+    background-color: gray;
+}

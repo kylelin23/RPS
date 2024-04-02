@@ -3,9 +3,15 @@
   <head>
     <meta charset="utf-8" />
     <title>Rock Paper Scissors</title>
+    <link rel = "stylesheet" href = "styles.css">
     <!--<script src = "script.js"></script>-->
   </head>
   <body>
+    <div id = "buttons">
+      <button id = "Rock">Rock</button>
+      <button id = "Paper">Paper</button>
+      <button id = "Scissors">Scissors</button>
+    </div>
     <script>
       function getComputerChoice() {
         let choice = 1 + Math.floor(Math.random() * 3);
@@ -17,44 +23,105 @@
           return "paper";
         }
       }
-      function playRound(playerSelection, computerSelection){
+      function playRound(playerSelection, computerSelection, result){
         playerSelection = playerSelection.toLowerCase();
           if(playerSelection == computerSelection){
+            result = "tie";
             return("Tie! You both played " + playerSelection + "! ");
           }
           if(playerSelection == "rock"){
             if(computerSelection == "scissors"){
+              result = "player";
               return("You win! Rock beats scissors!");
             }
             else{
+              result = "computer";
               return("You lose! Paper beats rock!");
             }
           }
           if(playerSelection == "paper"){
             if(computerSelection == "rock"){
+              result = "player";
               return("You win! Paper beats rock! ");
             }
             else{
+              result = "computer";
               return("You lose! Scissors beats paper! ");
             }
           }
           if(computerSelection == "paper"){
+            result = "player";
             return("You win! Scissors beats paper! ");
           }
+          result = "computer";
           return("You lose! Rock beats scissors! ");
       }
 
-      function playGame(){
-        console.log("Welcome to Rock Paper Scissors! ");
-        for(let i = 0; i < 5; i++){
-          console.log("Round " + (i+1) + ": ");
-          let input = prompt("Which are you going with? Rock, paper, or scissors? ");
-          console.log(playRound(input, getComputerChoice()));
-        }
-        console.log("Thank you for playing! ");
+      function playGame(type){
+        //console.log("Welcome to Rock Paper Scissors! ");
+        // let input = prompt("Which are you going with? Rock, paper, or scissors? ");
+        // console.log(playRound(type, getComputerChoice()));
+        // console.log("Thank you for playing! ");
       }
-      playGame();
 
+      // Display: 
+      const div = document.createElement("div");
+      div.setAttribute("id", "result");
+      div.textContent = "Welcome to Rock Paper Scissors! Press a button to play your move! ";
+
+      // Scores: 
+      const score = document.createElement("div");
+      score.textContent = "Score: ";
+      const playerScore = document.createElement("div");
+      playerScore.textContent = "Player: ";
+      let playerCounter = 0;
+      const computerScore = document.createElement("div");
+      computerScore.textContent = "Computer: ";
+      let computerCounter = 0;
+
+      // BODY: 
+      const body = document.querySelector("body");
+      body.appendChild(div);
+      body.appendChild(score);
+      body.appendChild(playerScore);
+      body.appendChild(computerScore);
+
+      // Adding event listeners: 
+      const btns = document.querySelectorAll("button");
+      btns.forEach((button) => button.addEventListener("click", () => {
+        // Get result of round
+        const result = playRound(button.id, getComputerChoice());
+        div.textContent = result;
+
+        // Update variables
+        if(result.includes("win")){
+          playerCounter++;
+          playerScore.textContent = "Player: " + playerCounter.toString();
+        }
+        if(result.includes("lose")){
+          computerCounter++;
+          computerScore.textContent = "Computer: " + computerCounter.toString();
+        }
+
+        // End Game
+        if(playerCounter == 5 || computerCounter == 5){
+          body.removeChild(div);
+          body.removeChild(score);
+          body.removeChild(playerScore);
+          body.removeChild(computerScore);
+          const buttons = document.getElementById("buttons");
+          body.removeChild(buttons);
+          const win = document.createElement("div");
+          win.setAttribute("id", "win");
+          body.appendChild(win);
+          if(playerCounter == 5){
+            win.textContent = "You win! ";
+          }
+          else{
+            win.textContent = "You lose :( better luck next time! "
+          }
+        }
+      }));
     </script>
   </body>
 </html>
